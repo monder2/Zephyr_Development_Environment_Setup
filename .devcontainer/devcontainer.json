@@ -1,0 +1,34 @@
+{
+    // Name of the dev container
+    "name": "test",
+    // Dockerfile to use to build the image     
+    "dockerComposeFile": "../compose.yml",
+    // indicate the container to run for the working directory
+    "service": "devtools",
+    // indicate the working directory inside the container
+    "workspaceFolder": "/workspaces",
+
+    // List of extensions to install from the oficial repository
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {}
+    },
+
+    // // execute commands after the container is created
+    // "postCreateCommand": "apt-get update && apt-get install -y doxygen",
+
+    // set some usefull vs code configuraation only exsiting in our contianer
+    "customizations": {
+        "vscode": {
+            // Add some extensions
+            "extensions": [
+                "mcu-debug.debug-tracker-vscode",
+                "ms-vscode.cpptools",
+                "marus25.cortex-debug"
+            ],
+            // Set some settings
+            "settings": {
+                "workbench.colorTheme": "Monokai"
+            }
+        }
+    }
+}

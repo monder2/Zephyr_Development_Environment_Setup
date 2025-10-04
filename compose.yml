@@ -1,0 +1,35 @@
+services:
+  open_server:      # container name been used by the image to connect to openocd
+    build:
+      context: .            # directory where the dockefile is located
+      dockerfile: .devcontainer/server.dockerfile  # docker filename for openocd
+    ports:          # port mapping
+      - 3333:3333
+    devices:        # device mapping to usb ports
+      - /dev/bus/usb:/dev/bus/usb
+    networks:
+      static_net:         # use network static_net
+        ipv4_address: 172.25.0.3  # assing ip address to container
+  devtools:      # container name been used by the image to connect to openocd
+    build:
+      context: .            # directory where the dockefile is located
+      dockerfile: .devcontainer/devtools.dockerfile  # docker filename to build image
+    volumes:        # share current directory . with contianer /workspaces   directory
+      - type: bind
+        source: ./
+        target: /workspaces
+    depends_on:
+      - open_server
+    networks:
+      static_net:         # use network static_net
+        ipv4_address: 172.25.0.4  # assing ip address to container
+    command:                # keep the container running
+      sleep infinity
+
+networks:
+  static_net:          # network name to be used by containers
+    driver: bridge    # network driver
+    ipam:     
+      config:         # network configuration
+        - subnet: 172.25.0.0/16 # network subnet
+          gateway: 172.25.0.1   # network gateway
